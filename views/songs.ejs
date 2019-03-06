@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Song List</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Song List</h1>
+      <hr>
+      <div id="songContainer"></div>
+    </div>
+    <div style="position: fixed; right: 100px; bottom: 100px;">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#addSongForm">Add Song</button>
+    </div>
+    <!-- Add Song Modal -->
+    <div id="addSongForm" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><b>Add Song</b></h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="songName">Name:</label>
+                <input type="text" class="form-control" id="songName" name="songName">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="artist">Artist:</label>
+                <input type="text" class="form-control" id="artist" name="artist">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="bpm">BPM:</label>
+                <input type="text" class="form-control" id="bpm" name="bpm">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="songType">Type:</label>
+                <select class="form-control" id="songType" name="songType">
+                  <option value="Arcade">Arcade</option>
+                  <option value="Full Song">Full Song</option>
+                  <option value="Remix">Remix</option>
+                  <option value="Shortcut">Shortcut</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="category">Category:</label>
+                <select class="form-control" id="category" name="category">
+                  <option value="Original">Original</option>
+                  <option value="Kpop">Kpop</option>
+                  <option value="World Music">World Music</option>
+                  <option value="Jpop">Jpop</option>
+                  <option value="Xross">Xross</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="originGame">Game Origin:</label>
+                <select class="form-control" id="originGame" name="originGame">
+                  <option value="XX">XX</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="originVersion">Version Origin:</label>
+                <select class="form-control" id="originVersion" name="originVersion">
+                  <option value="1.00">1.00</option>
+                  <option value="1.01">1.01</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="image">Image:</label>
+                <input type="text" class="form-control" id="image" name="image">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="visualizer">Visualizer:</label>
+                <input type="text" class="form-control" id="visualizer" name="visualizer">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCloseForm">Close</button>
+            <button type="button" class="btn btn-primary" id="btnAddSong">Submit</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Chart Modal -->
+    <div id="chartForm" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 id="chart-modal-title" class="modal-title"></h4>
+          </div>
+          <div id="chart-modal-content" class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCloseChartForm">Close</button>
+            <button type="button" class="btn btn-primary" id="btnAddChart" data-toggle="modal" data-target="#chartEditForm" onclick="showAddChart()">Add Chart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Edit Modal -->
+    <div id="chartEditForm" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 id="chart-modal-title" class="modal-title">Edit Chart</h4>
+          </div>
+          <div id="chart-modal-content" class="modal-body">
+            <div class="row">
+              <input type="hidden" class="form-control" id="chartId" name="chartId" value="">
+              <div class="form-group col-md-6">
+                <label for="chartType">Type:</label>
+                <select class="form-control" id="chartType" name="chartType">
+                  <option value="Single">Single</option>
+                  <option value="Double">Double</option>
+                  <option value="Single Performance">Single Performance</option>
+                  <option value="Double Performance">Double Performance</option>
+                  <option value="Co-op">Co-op</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="level">Level:</label>
+                <select class="form-control" id="level" name="level">
+                  <% function pad (str, max) {
+                      str = str.toString();
+                      return str.length < max ? pad("0" + str, max) : str;
+                    } %>
+                  <% for(var i = 1; i <= 30; i++) { %>
+                    <option value="<%= pad(i, 2) %>"><%= pad(i, 2) %></option>
+                  <% } %>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="stepmaker">Stepmaker:</label>
+                <input type="text" class="form-control" id="stepmaker" name="stepmaker">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="requirement">Requirement:</label>
+                <input type="text" class="form-control" id="requirement" name="requirement">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="chartOriginGame">Game Origin:</label>
+                <select class="form-control" id="chartOriginGame" name="chartOriginGame">
+                  <option value="XX">XX</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="chartOriginVersion">Version Origin:</label>
+                <select class="form-control" id="chartOriginVersion" name="chartOriginVersion">
+                  <option value="1.00">1.00</option>
+                  <option value="1.01">1.01</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCloseAddChartForm">Close</button>
+            <button type="button" class="btn btn-primary" id="btnSubmitAddChart">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script src="/javascripts/songs.js"></script>
+  </body>
+</html>
